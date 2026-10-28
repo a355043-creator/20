@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>曾宥棋 ｜ 數位商管跨領域人才</title>
+  <meta name="description" content="曾宥棋，就讀新北市中和南山中學，熱愛商業經營、電子商務與智慧科技，致力成為全方位數位商管跨領域人才。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #0a0e1f;
+      --navy2:   #111528;
+      --teal:    #00d4c8;
+      --teal2:   #00b4c4;
+      --gold:    #f5c842;
+      --gold2:   #e0a820;
+      --purple:  #6c63ff;
+      --pink:    #ff6b9d;
+      --white:   #f0f4ff;
+      --glass:   rgba(255,255,255,0.05);
+      --glass2:  rgba(255,255,255,0.10);
+      --border:  rgba(0,212,200,0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── animated starfield ─── */
+    #stars-canvas {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    }
+
+    /* ─── floating orbs ─── */
+    .orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(80px); opacity: 0.18; pointer-events: none; z-index: 0;
+    }
+    .orb-1 { width: 520px; height: 520px; background: var(--teal);   top: -140px; left: -140px; animation: drift1 14s ease-in-out infinite alternate; }
+    .orb-2 { width: 400px; height: 400px; background: var(--purple); bottom: -100px; right: -100px; animation: drift2 18s ease-in-out infinite alternate; }
+    .orb-3 { width: 280px; height: 280px; background: var(--gold);   top: 40%; left: 55%; animation: drift3 12s ease-in-out infinite alternate; }
+
+    @keyframes drift1 { to { transform: translate(60px, 80px); } }
+    @keyframes drift2 { to { transform: translate(-60px, -80px); } }
+    @keyframes drift3 { to { transform: translate(-40px, 40px); } }
+
+    /* ─── nav ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(10,14,31,0.65);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 1.35rem; font-weight: 800; letter-spacing: 0.05em;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      color: rgba(240,244,255,0.7); text-decoration: none;
+      font-size: 0.9rem; font-weight: 500; letter-spacing: 0.04em;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--teal); }
+
+    /* ─── hero ─── */
+    #hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 120px 48px 80px;
+    }
+    .hero-inner {
+      display: flex; align-items: center; gap: 80px;
+      max-width: 1100px; width: 100%;
+    }
+
+    /* avatar */
+    .avatar-wrap {
+      flex-shrink: 0; position: relative;
+    }
+    .avatar-ring {
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      padding: 4px;
+      background: conic-gradient(var(--teal), var(--gold), var(--purple), var(--teal));
+      animation: spin 6s linear infinite;
+      box-shadow: 0 0 60px rgba(0,212,200,0.35);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .avatar-ring-inner {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: var(--navy2);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .avatar-ring-inner img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .avatar-badge {
+      position: absolute; bottom: 8px; right: -10px;
+      background: linear-gradient(135deg, var(--teal), var(--purple));
+      color: #fff; font-size: 0.75rem; font-weight: 700;
+      padding: 6px 14px; border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,212,200,0.4);
+      white-space: nowrap;
+    }
+
+    /* hero text */
+    .hero-text { flex: 1; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--glass2); border: 1px solid var(--border);
+      padding: 6px 18px; border-radius: 20px;
+      font-size: 0.8rem; font-weight: 600; color: var(--teal);
+      letter-spacing: 0.08em; margin-bottom: 22px;
+    }
+    .hero-tag span { display: inline-block; width: 8px; height: 8px; background: var(--teal); border-radius: 50%; animation: pulse-dot 1.5s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+
+    .hero-name {
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -0.01em;
+      background: linear-gradient(135deg, #fff 0%, var(--teal) 50%, var(--gold) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .hero-subtitle {
+      font-size: 1.1rem; color: rgba(240,244,255,0.6);
+      font-weight: 400; margin-bottom: 28px;
+    }
+    .hero-subtitle strong { color: var(--gold); font-weight: 700; }
+
+    .hero-desc {
+      font-size: 1rem; line-height: 1.85;
+      color: rgba(240,244,255,0.75);
+      max-width: 520px; margin-bottom: 40px;
+    }
+
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 32px; border-radius: 50px;
+      font-size: 0.95rem; font-weight: 700; text-decoration: none;
+      cursor: pointer; border: none;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--teal), var(--purple));
+      color: #fff;
+      box-shadow: 0 8px 30px rgba(0,212,200,0.35);
+    }
+    .btn-primary:hover { box-shadow: 0 14px 40px rgba(0,212,200,0.5); }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--white);
+    }
+    .btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ─── section commons ─── */
+    section { position: relative; z-index: 1; }
+    .section-inner { max-width: 1100px; margin: 0 auto; padding: 100px 48px; }
+    .section-label {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.18em;
+      color: var(--teal); text-transform: uppercase; margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800; margin-bottom: 16px;
+    }
+    .section-title span {
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .section-desc { color: rgba(240,244,255,0.6); max-width: 520px; line-height: 1.8; }
+
+    /* ─── about ─── */
+    #about { background: linear-gradient(180deg, transparent, rgba(17,21,40,0.7), transparent); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 56px;
+    }
+    .about-card {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 20px; padding: 36px;
+      backdrop-filter: blur(12px);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .about-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,212,200,0.12); }
+    .about-card-icon { font-size: 2.4rem; margin-bottom: 18px; }
+    .about-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; color: var(--gold); }
+    .about-card p { color: rgba(240,244,255,0.65); line-height: 1.8; font-size: 0.95rem; }
+
+    /* ─── skills ─── */
+    #skills { }
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 28px; margin-top: 56px;
+    }
+    .skill-card {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 20px; padding: 32px 28px;
+      backdrop-filter: blur(12px); text-align: center;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      cursor: default;
+    }
+    .skill-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: var(--teal);
+      box-shadow: 0 20px 60px rgba(0,212,200,0.15);
+    }
+    .skill-icon { font-size: 2.8rem; margin-bottom: 16px; display: block; }
+    .skill-name {
+      font-size: 1.05rem; font-weight: 700; margin-bottom: 8px;
+    }
+    .skill-desc { font-size: 0.85rem; color: rgba(240,244,255,0.55); line-height: 1.7; }
+    .skill-bar-wrap { margin-top: 18px; background: rgba(255,255,255,0.08); border-radius: 10px; height: 6px; overflow: hidden; }
+    .skill-bar {
+      height: 100%; border-radius: 10px;
+      background: linear-gradient(90deg, var(--teal), var(--purple));
+      animation: grow-bar 1.5s ease forwards;
+      width: 0%;
+    }
+    @keyframes grow-bar { to { width: var(--pct); } }
+
+    /* ─── passion ─── */
+    #passion { background: linear-gradient(180deg, transparent, rgba(17,21,40,0.7), transparent); }
+    .passion-flex { display: flex; gap: 40px; flex-wrap: wrap; margin-top: 56px; }
+    .passion-item {
+      flex: 1; min-width: 220px;
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 20px; padding: 36px 28px; text-align: center;
+      backdrop-filter: blur(12px);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .passion-item:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(108,99,255,0.2); }
+    .passion-item .pi-icon { font-size: 3rem; margin-bottom: 18px; display: block; }
+    .passion-item h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--teal); }
+    .passion-item p { font-size: 0.88rem; color: rgba(240,244,255,0.6); line-height: 1.75; }
+
+    /* ─── goal banner ─── */
+    #goal {
+      background: linear-gradient(135deg, rgba(0,212,200,0.08), rgba(108,99,255,0.08));
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .goal-inner {
+      max-width: 860px; margin: 0 auto; padding: 100px 48px; text-align: center;
+    }
+    .goal-quote {
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-weight: 700; line-height: 1.65;
+      color: var(--white);
+      margin-bottom: 28px;
+    }
+    .goal-quote em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .goal-sub { color: rgba(240,244,255,0.55); font-size: 0.95rem; }
+
+    /* ─── footer ─── */
+    footer {
+      position: relative; z-index: 1; text-align: center;
+      padding: 48px 24px;
+      border-top: 1px solid var(--border);
+      color: rgba(240,244,255,0.35); font-size: 0.85rem;
+    }
+    footer strong { color: var(--teal); }
+
+    /* ─── scroll-reveal ─── */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ─── responsive ─── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      #hero { padding: 100px 24px 60px; }
+      .hero-inner { flex-direction: column; gap: 40px; text-align: center; }
+      .avatar-ring { width: 200px; height: 200px; }
+      .hero-btns { justify-content: center; }
+      .about-grid { grid-template-columns: 1fr; }
+      .section-inner { padding: 70px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Canvas Stars -->
+  <canvas id="stars-canvas"></canvas>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-logo">曾宥棋 YQ</div>
+    <ul class="nav-links">
+      <li><a href="#about">關於我</a></li>
+      <li><a href="#skills">學習技能</a></li>
+      <li><a href="#passion">熱情領域</a></li>
+      <li><a href="#goal">未來目標</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="avatar-wrap">
+        <div class="avatar-ring">
+          <div class="avatar-ring-inner">
+            <img src="avatar.png" alt="曾宥棋 個人頭像" id="avatar-img" />
+          </div>
+        </div>
+        <div class="avatar-badge">🎓 南山中學</div>
+      </div>
+      <div class="hero-text">
+        <div class="hero-tag">
+          <span></span> 數位商管跨領域人才
+        </div>
+        <h1 class="hero-name">曾宥棋</h1>
+        <p class="hero-subtitle">
+          就讀 <strong>新北市中和・南山中學</strong>
+        </p>
+        <p class="hero-desc">
+          熱愛商業經營、電子商務與智慧科技，在智光商工的課程中不斷精進自我，
+          從文書處理到網頁開發，從打字指法到金融專業——
+          每一步都是邁向全方位數位商管人才的紮實積累。
+        </p>
+        <div class="hero-btns">
+          <a href="#passion" class="btn btn-primary">探索我的熱情 🚀</a>
+          <a href="#goal" class="btn btn-outline">未來目標 ✨</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="section-inner">
+      <p class="section-label reveal">個人簡介</p>
+      <h2 class="section-title reveal">認識 <span>曾宥棋</span></h2>
+      <p class="section-desc reveal">
+        一位來自新北市中和的高中生，對科技與商業的結合充滿熱情，
+        正全力在學習旅程中累積實力。
+      </p>
+      <div class="about-grid">
+        <div class="about-card reveal">
+          <div class="about-card-icon">🏫</div>
+          <h3>就讀學校</h3>
+          <p>現就讀於<strong style="color:var(--white)">新北市中和・南山中學</strong>，同時在<strong style="color:var(--white)">智光商工</strong>深耕商管與數位技能，奠定紮實的跨領域基礎。</p>
+        </div>
+        <div class="about-card reveal">
+          <div class="about-card-icon">💡</div>
+          <h3>個人特質</h3>
+          <p>對新事物充滿<strong style="color:var(--white)">好奇心</strong>，擅長自主學習與整合多元知識，樂於面對挑戰，以積極的態度迎向每一個成長機會。</p>
+        </div>
+        <div class="about-card reveal">
+          <div class="about-card-icon">📍</div>
+          <h3>所在地區</h3>
+          <p>來自<strong style="color:var(--white)">新北市中和區</strong>，緊鄰雙北核心商圈，正在這充滿活力的都會環境中汲取靈感，拓展視野。</p>
+        </div>
+        <div class="about-card reveal">
+          <div class="about-card-icon">🎯</div>
+          <h3>核心目標</h3>
+          <p>立志成為<strong style="color:var(--white)">全方位數位商管跨領域人才</strong>，結合科技力與商業思維，為未來的電商與智慧產業貢獻價值。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <div class="section-inner">
+      <p class="section-label reveal">學習中的技能</p>
+      <h2 class="section-title reveal">課程 <span>技能樹</span></h2>
+      <p class="section-desc reveal">在智光商工的紮實訓練中，每天累積更多數位商管實力。</p>
+      <div class="skills-grid">
+
+        <div class="skill-card reveal">
+          <span class="skill-icon">📝</span>
+          <div class="skill-name">文書處理</div>
+          <div class="skill-desc">Word、Excel、PowerPoint 等辦公室套件，精準高效地完成各類商業文件。</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="--pct:82%"></div></div>
+        </div>
+
+        <div class="skill-card reveal">
+          <span class="skill-icon">⌨️</span>
+          <div class="skill-name">打字指法</div>
+          <div class="skill-desc">正確指法訓練，兼顧速度與準確率，提升資料輸入效率。</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="--pct:75%"></div></div>
+        </div>
+
+        <div class="skill-card reveal">
+          <span class="skill-icon">💰</span>
+          <div class="skill-name">金融專業</div>
+          <div class="skill-desc">理解基礎金融知識、財務概念與商業運作模式，為商業決策奠定基礎。</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="--pct:70%"></div></div>
+        </div>
+
+        <div class="skill-card reveal">
+          <span class="skill-icon">🌐</span>
+          <div class="skill-name">網頁開發</div>
+          <div class="skill-desc">學習 HTML、CSS 與基礎 JavaScript，打造具視覺美感的網頁介面。</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="--pct:68%"></div></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Passion -->
+  <section id="passion">
+    <div class="section-inner">
+      <p class="section-label reveal">熱情所在</p>
+      <h2 class="section-title reveal">驅動我的 <span>三大領域</span></h2>
+      <p class="section-desc reveal">商業、科技與數位的交匯點，正是我最想深耕的地方。</p>
+      <div class="passion-flex">
+        <div class="passion-item reveal">
+          <span class="pi-icon">🏢</span>
+          <h3>商業經營</h3>
+          <p>探索企業運作的核心邏輯，從策略規劃到執行落地，對商業模式的設計與創新充滿熱情。</p>
+        </div>
+        <div class="passion-item reveal">
+          <span class="pi-icon">🛒</span>
+          <h3>電子商務</h3>
+          <p>深入研究線上交易生態、消費者行為與數位行銷，希望打造創新的電商體驗。</p>
+        </div>
+        <div class="passion-item reveal">
+          <span class="pi-icon">🤖</span>
+          <h3>智慧科技</h3>
+          <p>關注 AI、大數據與物聯網的發展趨勢，期待將智慧科技應用於未來的商業場景。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Goal -->
+  <section id="goal">
+    <div class="goal-inner">
+      <p class="section-label reveal" style="text-align:center">未來藍圖</p>
+      <p class="goal-quote reveal">
+        「我期待自己能一步步成長為<br/>
+        <em>全方位的數位商管跨領域人才</em>，<br/>
+        讓科技與商業在我手中完美融合。」
+      </p>
+      <p class="goal-sub reveal">— 曾宥棋・2026</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 <strong>曾宥棋</strong>・南山中學・新北市中和　｜　Designed with ❤️ &amp; Code</p>
+  </footer>
+
+  <script>
+    /* ── Starfield ── */
+    (function(){
+      const c = document.getElementById('stars-canvas');
+      const ctx = c.getContext('2d');
+      let stars = [];
+      function resize(){ c.width=innerWidth; c.height=innerHeight; }
+      function mkStars(){
+        stars=[];
+        for(let i=0;i<180;i++) stars.push({
+          x:Math.random()*c.width, y:Math.random()*c.height,
+          r:Math.random()*1.2+0.2, a:Math.random(),
+          sp:Math.random()*0.006+0.002
+        });
+      }
+      function draw(){
+        ctx.clearRect(0,0,c.width,c.height);
+        stars.forEach(s=>{
+          s.a+=s.sp; if(s.a>1)s.a=0;
+          ctx.beginPath();
+          ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+          ctx.fillStyle=`rgba(200,230,255,${s.a*0.8})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      window.addEventListener('resize',()=>{resize();mkStars();});
+      resize(); mkStars(); draw();
+    })();
+
+    /* ── Scroll Reveal ── */
+    const observer = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+    },{ threshold:0.12 });
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+    /* ── Avatar fallback ── */
+    document.getElementById('avatar-img').addEventListener('error', function(){
+      this.style.display='none';
+      this.parentElement.innerHTML='<div style="font-size:6rem;display:flex;align-items:center;justify-content:center;height:100%;">👨‍💼</div>';
+    });
+  </script>
+</body>
+</html>
